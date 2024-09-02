@@ -31584,7 +31584,7 @@ function run() {
             if (!botToken || !chatId) {
                 throw new Error("bot_token and chat_id are required");
             }
-            const uri = `https://api.telegram.org/bot${botToken}/send_message`;
+            const uri = `https://api.telegram.org/bot${botToken}/sendMessage`;
             const message = formatMessage(payload);
             yield (0, send_message_1.default)(chatId, message, uri);
             core.debug(`Message sent!`);

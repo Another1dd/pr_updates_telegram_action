@@ -18,7 +18,7 @@ async function run(): Promise<void> {
       throw new Error("bot_token and chat_id are required");
     }
 
-    const uri = `https://api.telegram.org/bot${botToken}/send_message`;
+    const uri = `https://api.telegram.org/bot${botToken}/sendMessage`;
     const message = formatMessage(payload);
 
     await sendMessage(chatId, message, uri);

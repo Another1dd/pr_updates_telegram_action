@@ -31608,7 +31608,16 @@ const formatMessage = (payload) => {
     const senderName = escapeMarkdown(sender.login);
     switch (action) {
         case "opened":
-            message = `🔄 *Pull Request* \\\#${number}
+            message = `🔄 *Opened Pull Request* \\\#${number}
+      On [${ownerName}/${repoName}](https://github.com/${ownerName}/${repoName}/pull/${number})
+      *Title:* ${prTitle}
+      *By:* [${senderName}](https://github.com/${senderName})
+      [View Pull Request](https://github.com/${ownerName}/${repoName}/pull/${number})
+      `;
+            console.debug("Message: ", message);
+            return message;
+        case "closed":
+            message = `❌ *Closed Pull Request* \\\#${number}
       On [${ownerName}/${repoName}](https://github.com/${ownerName}/${repoName}/pull/${number})
       *Title:* ${prTitle}
       *By:* [${senderName}](https://github.com/${senderName})

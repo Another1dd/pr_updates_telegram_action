@@ -1,0 +1,16 @@
+name: 'Pull Request Updates Telegram'
+description: 'Sends a message to a Telegram channel when a pull request is updated'
+author: 'Another1DD'
+inputs:
+  chat_id:
+    required: true
+    description: 'Telegram chat ID'
+  bot_token:
+    required: true
+    description: 'Telegram bot token'
+branding:
+  icon: 'send'
+  color: 'gray-dark'
+runs:
+  using: 'node20'
+  main: 'dist/index.js'

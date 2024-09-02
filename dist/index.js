@@ -31598,6 +31598,7 @@ function run() {
 }
 // Format the message based on the event type, new pull or review request.
 const formatMessage = (payload) => {
+    var _a;
     const { action, pull_request, repository, sender, number } = payload;
     const { name, owner } = repository;
     const { title } = pull_request;
@@ -31628,9 +31629,11 @@ const formatMessage = (payload) => {
         case "review_requested":
             const { pull_request } = payload;
             const { requested_reviewers } = pull_request;
-            const { name } = requested_reviewers[0];
-            const reviewerName = escapeMarkdown(name !== null && name !== void 0 ? name : '');
-            message = `📝  *Review Request* 
+            const reviewer = requested_reviewers[0];
+            const { name } = reviewer;
+            const { login } = reviewer;
+            const reviewerName = escapeMarkdown((_a = name !== null && name !== void 0 ? name : login) !== null && _a !== void 0 ? _a : '');
+            message = `📝  *Review Requested* 
       On \\\#${number} [${ownerName}/${repoName}]\(https://github.com/${ownerName}/${repoName}/pull/${number}\) 
       *Title:* ${prTitle}
       *By:* [${senderName}](https://github.com/${senderName})

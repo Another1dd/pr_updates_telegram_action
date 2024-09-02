@@ -1,7 +1,7 @@
 import * as core from "@actions/core";
 import * as github from "@actions/github";
 import sendMessage from "./send_message";
-import { PullRequestEvent } from "@octokit/webhooks-definitions/schema";
+import { PullRequestEvent } from "@octokit/webhooks-types";
 
 async function run(): Promise<void> {
   try {
@@ -53,9 +53,10 @@ const formatMessage = (payload: PullRequestEvent): string => {
       return message;
 
     case "review_requested":
-      const { requested_reviewer } = payload;
-      const { login: reviewer } = requested_reviewer;
-      const reviewerName = escapeMarkdown(reviewer);
+      const { pull_request } = payload;
+      const { requested_reviewers } = pull_request;
+      const { name } = requested_reviewers[0];
+      const reviewerName = escapeMarkdown(name ?? '');
       message = `📝  *Review Request* 
       On \\\#${number} [${ownerName}/${repoName}]\(https://github.com/${ownerName}/${repoName}/pull/${number}\) 
       *Title:* ${prTitle}

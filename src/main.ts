@@ -1,7 +1,7 @@
 import * as core from "@actions/core";
 import * as github from "@actions/github";
 import sendMessage from "./send_message";
-import { PullRequestEvent, PullRequestReviewCommentEvent } from "@octokit/webhooks-types";
+import { PullRequestEvent, PullRequestReviewEvent, PullRequestReviewCommentEvent } from "@octokit/webhooks-types";
 import { User } from "@octokit/webhooks-types";
 
 async function run(): Promise<void> {
@@ -15,23 +15,24 @@ async function run(): Promise<void> {
     }
 
     const uri = `https://api.telegram.org/bot${botToken}/sendMessage`;
+    let message = "";
 
     if (github.context.eventName == "pull_request") {
       const payload = github.context.payload as PullRequestEvent;
-      const message = formatPullRequestMessage(payload);
-
-      await sendMessage(chatId, topicId, message, uri);
+      message = formatPullRequestMessage(payload);
+    } else if (github.context.eventName == "pull_request_review") {
+      const payload = github.context.payload as PullRequestReviewEvent;
+      message = formatPullRequestReviewMessage(payload);
     } else if (github.context.eventName == "pull_request_review_comment") {
       const payload = github.context.payload as PullRequestReviewCommentEvent
-      const message = formatPullRequestReviewCommentMessage(payload);
-
-      await sendMessage(chatId, topicId, message, uri);
+      message = formatPullRequestReviewCommentMessage(payload);
     } else {
       throw new Error(
-        "This action only works on pull_request & pull_request_review_comment events"
+        "This action only works on pull_request & pull_request_review & pull_request_review_comment events"
       );
     }
 
+    await sendMessage(chatId, topicId, message, uri);
 
     core.debug(`Message sent!`);
     core.setOutput("Finshed time", new Date().toTimeString());
@@ -57,8 +58,8 @@ const formatPullRequestMessage = (payload: PullRequestEvent): string => {
 
   switch (action) {
     case "opened":
-      message = `🚀 *Opened Pull Request* \\\#${number}
-      On [${ownerName}/${repoName}](https://github.com/${ownerName}/${repoName}/pull/${number})
+      message = `🚀 *Pull Request Opened* \\\#${number}
+      [Repository](https://github.com/${ownerName}/${repoName}/pull/${number})
       *Title:* ${prTitle}
       *By:* [${senderName}](https://github.com/${senderName})
       [View Pull Request](https://github.com/${ownerName}/${repoName}/pull/${number})
@@ -67,8 +68,8 @@ const formatPullRequestMessage = (payload: PullRequestEvent): string => {
       return message;
 
     case "closed":
-      message = `❌ *Closed Pull Request* \\\#${number}
-      On [${ownerName}/${repoName}](https://github.com/${ownerName}/${repoName}/pull/${number})
+      message = `❌ *Pull Request Closed* \\\#${number}
+      [Repository](https://github.com/${ownerName}/${repoName}/pull/${number})
       *Title:* ${prTitle}
       *By:* [${senderName}](https://github.com/${senderName})
       [View Pull Request](https://github.com/${ownerName}/${repoName}/pull/${number})
@@ -83,8 +84,8 @@ const formatPullRequestMessage = (payload: PullRequestEvent): string => {
       const { name } = reviewer;
       const { login } = reviewer as User;
       const reviewerName = escapeMarkdown(name ?? login ?? "");
-      message = `📝  *Review Requested*  \\\#${number}
-      On [${ownerName}/${repoName}]\(https://github.com/${ownerName}/${repoName}/pull/${number}\) 
+      message = `📝  *Pull Request Review Requested*  \\\#${number}
+      [Repository](https://github.com/${ownerName}/${repoName}/pull/${number}) 
       *Title:* ${prTitle}
       *By:* [${senderName}](https://github.com/${senderName})
       *For:* [${reviewerName}](https://github.com/${reviewerName})
@@ -94,14 +95,70 @@ const formatPullRequestMessage = (payload: PullRequestEvent): string => {
       return message;
 
     case "synchronize":
-      message = `🔄  *Synchronize* \\\#${number} 
-      On [${ownerName}/${repoName}]\(https://github.com/${ownerName}/${repoName}/pull/${number}\) 
+      message = `🔄  *Pull Request Updated* \\\#${number} 
+      [Repository](https://github.com/${ownerName}/${repoName}/pull/${number}) 
       *Title:* ${prTitle}
       *By:* [${senderName}](https://github.com/${senderName})
       [View Request](https://github.com/${ownerName}/${repoName}/pull/${number})
       `;
       console.debug("Message: ", message);
       return message;
+    default:
+      throw new Error(`Unsupported action: ${action}`);
+  }
+};
+
+// Format the pull request review message based on the event type, new pull or review request.
+const formatPullRequestReviewMessage = (payload: PullRequestReviewEvent): string => {
+  const { action, pull_request, repository, sender, review } = payload;
+  const { name, owner } = repository;
+  const { title, number } = pull_request;
+  const { body, html_url, state } = review;
+
+  const prTitle = escapeMarkdown(title);
+  const ownerName = escapeMarkdown(owner.login);
+  const repoName = escapeMarkdown(name);
+  const senderName = escapeMarkdown(sender.login);
+
+  let message = "";
+
+  switch (action) {
+    case "submitted":
+      message = `📝 *Pull Request Review submitted* \\\#${number}
+      [Repository](https://github.com/${ownerName}/${repoName}/pull/${number})
+      *Title:* ${prTitle}
+      *By:* [${senderName}](https://github.com/${senderName})
+      *Status: ${state}*
+      *Text: ${body}*
+      [View Review](${html_url})
+      [View Pull Request](https://github.com/${ownerName}/${repoName}/pull/${number})
+      `;
+      console.debug("Message: ", message);
+      return message;
+
+    case "dismissed":
+      message = `🗑 *Pull Request Review dismissed* \\\#${number}
+      [Repository](https://github.com/${ownerName}/${repoName}/pull/${number})
+      *Title:* ${prTitle}
+      *By:* [${senderName}](https://github.com/${senderName})
+      [View Pull Request](https://github.com/${ownerName}/${repoName}/pull/${number})
+      `;
+      console.debug("Message: ", message);
+      return message;
+
+    case "edited":
+      message = `✏️ *Pull Request Review edited* \\\#${number}
+      [Repository](https://github.com/${ownerName}/${repoName}/pull/${number})
+      *Title:* ${prTitle}
+      *By:* [${senderName}](https://github.com/${senderName})
+      *Status: ${state}*
+      *Text: ${body}*
+      [View Review](${html_url})
+      [View Pull Request](https://github.com/${ownerName}/${repoName}/pull/${number})
+      `;
+      console.debug("Message: ", message);
+      return message;
+
     default:
       throw new Error(`Unsupported action: ${action}`);
   }
@@ -123,8 +180,8 @@ const formatPullRequestReviewCommentMessage = (payload: PullRequestReviewComment
 
   switch (action) {
     case "created":
-      message = `📝 *New comment in Pull Request* \\\#${number}
-      On [${ownerName}/${repoName}](https://github.com/${ownerName}/${repoName}/pull/${number})
+      message = `📝 *Pull Request New Comment* \\\#${number}
+      [Repository](https://github.com/${ownerName}/${repoName}/pull/${number})
       *Title:* ${prTitle}
       *By:* [${senderName}](https://github.com/${senderName})
       *Text: ${body}*
@@ -135,8 +192,8 @@ const formatPullRequestReviewCommentMessage = (payload: PullRequestReviewComment
       return message;
 
     case "deleted":
-      message = `🗑 *Deleted comment in Pull Request* \\\#${number}
-      On [${ownerName}/${repoName}](https://github.com/${ownerName}/${repoName}/pull/${number})
+      message = `🗑 *Pull Request Comment Deleted* \\\#${number}
+      [Repository](https://github.com/${ownerName}/${repoName}/pull/${number})
       *Title:* ${prTitle}
       *By:* [${senderName}](https://github.com/${senderName})
       [View Pull Request](https://github.com/${ownerName}/${repoName}/pull/${number})
@@ -145,8 +202,8 @@ const formatPullRequestReviewCommentMessage = (payload: PullRequestReviewComment
       return message;
 
     case "edited":
-      message = `✏️ *Edited comment in Pull Request* \\\#${number}
-      On [${ownerName}/${repoName}](https://github.com/${ownerName}/${repoName}/pull/${number})
+      message = `✏️ *Pull Request Comment Deleted* \\\#${number}
+      [Repository](https://github.com/${ownerName}/${repoName}/pull/${number})
       *Title:* ${prTitle}
       *By:* [${senderName}](https://github.com/${senderName})
       *Text: ${body}*

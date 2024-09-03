@@ -31666,9 +31666,10 @@ const formatPullRequestMessage = (payload) => {
 };
 // Format the pull request review comment message based on the event type, new pull or review request.
 const formatPullRequestReviewCommentMessage = (payload) => {
-    const { action, pull_request, repository, sender } = payload;
+    const { action, pull_request, repository, sender, comment } = payload;
     const { name, owner } = repository;
     const { title, number } = pull_request;
+    const { body } = comment;
     const prTitle = escapeMarkdown(title);
     const ownerName = escapeMarkdown(owner.login);
     const repoName = escapeMarkdown(name);
@@ -31676,29 +31677,32 @@ const formatPullRequestReviewCommentMessage = (payload) => {
     let message = "";
     switch (action) {
         case "created":
-            message = `🚀 *New comment on pull request* \\\#${number}
+            message = `📝 *New comment in Pull Request* \\\#${number}
       On [${ownerName}/${repoName}](https://github.com/${ownerName}/${repoName}/pull/${number})
       *Title:* ${prTitle}
       *By:* [${senderName}](https://github.com/${senderName})
+      *Body: ${body}*
       [View Pull Request](https://github.com/${ownerName}/${repoName}/pull/${number})
       `;
             console.debug("Message: ", message);
             return message;
         case "deleted":
-            message = `❌ *Closed Pull Request* \\\#${number}
+            message = `🗑 *Deleted comment in Pull Request* \\\#${number}
       On [${ownerName}/${repoName}](https://github.com/${ownerName}/${repoName}/pull/${number})
       *Title:* ${prTitle}
       *By:* [${senderName}](https://github.com/${senderName})
+      *Body: ${body}*
       [View Pull Request](https://github.com/${ownerName}/${repoName}/pull/${number})
       `;
             console.debug("Message: ", message);
             return message;
         case "edited":
-            message = `🔄  *Synchronize* 
-      On \\\#${number} [${ownerName}/${repoName}]\(https://github.com/${ownerName}/${repoName}/pull/${number}\) 
+            message = `✏️ *Edited comment in Pull Request* \\\#${number}
+      On [${ownerName}/${repoName}](https://github.com/${ownerName}/${repoName}/pull/${number})
       *Title:* ${prTitle}
       *By:* [${senderName}](https://github.com/${senderName})
-      [View Request](https://github.com/${ownerName}/${repoName}/pull/${number})
+      *Body: ${body}*
+      [View Pull Request](https://github.com/${ownerName}/${repoName}/pull/${number})
       `;
             console.debug("Message: ", message);
             return message;

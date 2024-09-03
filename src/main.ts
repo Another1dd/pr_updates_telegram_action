@@ -112,7 +112,7 @@ const formatPullRequestReviewCommentMessage = (payload: PullRequestReviewComment
   const { action, pull_request, repository, sender, comment } = payload;
   const { name, owner } = repository;
   const { title, number } = pull_request;
-  const { body, url } = comment;
+  const { body, html_url } = comment;
 
   const prTitle = escapeMarkdown(title);
   const ownerName = escapeMarkdown(owner.login);
@@ -128,7 +128,7 @@ const formatPullRequestReviewCommentMessage = (payload: PullRequestReviewComment
       *Title:* ${prTitle}
       *By:* [${senderName}](https://github.com/${senderName})
       *Text: ${body}*
-      [View Comment](${url})
+      [View Comment](${html_url})
       [View Pull Request](https://github.com/${ownerName}/${repoName}/pull/${number})
       `;
       console.debug("Message: ", message);
@@ -150,7 +150,7 @@ const formatPullRequestReviewCommentMessage = (payload: PullRequestReviewComment
       *Title:* ${prTitle}
       *By:* [${senderName}](https://github.com/${senderName})
       *Text: ${body}*
-      [View Comment](${url})
+      [View Comment](${html_url})
       [View Pull Request](https://github.com/${ownerName}/${repoName}/pull/${number})
       `;
       console.debug("Message: ", message);

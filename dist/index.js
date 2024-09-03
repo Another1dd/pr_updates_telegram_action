@@ -31623,7 +31623,7 @@ const formatPullRequestMessage = (payload) => {
     switch (action) {
         case "opened":
             message = `🚀*Opened* \\\#${number}
-      *Title:* ${prTitle}
+      *PR Title:* ${prTitle}
       *By:* [${senderName}](https://github.com/${senderName})
       [View Pull Request](https://github.com/${ownerName}/${repoName}/pull/${number})
       `;
@@ -31645,7 +31645,7 @@ const formatPullRequestMessage = (payload) => {
             const { login } = reviewer;
             const reviewerName = escapeMarkdown((_a = name !== null && name !== void 0 ? name : login) !== null && _a !== void 0 ? _a : "");
             message = `📝*Review Requested*  \\\#${number}
-      *Title:* ${prTitle}
+      *PR Title:* ${prTitle}
       *By:* [${senderName}](https://github.com/${senderName})
       *For:* [${reviewerName}](https://github.com/${reviewerName})
       [View Request](https://github.com/${ownerName}/${repoName}/pull/${number})
@@ -31654,7 +31654,7 @@ const formatPullRequestMessage = (payload) => {
             return message;
         case "synchronize":
             message = `🔄*Updated* \\\#${number}
-      *Title:* ${prTitle}
+      *PR Title:* ${prTitle}
       *By:* [${senderName}](https://github.com/${senderName})
       [View Request](https://github.com/${ownerName}/${repoName}/pull/${number})
       `;
@@ -31678,7 +31678,7 @@ const formatPullRequestReviewMessage = (payload) => {
     switch (action) {
         case "submitted":
             message = `✅*Review submitted* \\\#${number}
-      *Title:* ${prTitle}
+      *PR Title:* ${prTitle}
       *By:* [${senderName}](https://github.com/${senderName})
       *Status: ${state.replace(/_/g, " ")}*
       *Text: ${body !== null && body !== void 0 ? body : ""}*
@@ -31689,7 +31689,7 @@ const formatPullRequestReviewMessage = (payload) => {
             return message;
         case "dismissed":
             message = `❎*Review dismissed* \\\#${number}
-      *Title:* ${prTitle}
+      *PR Title:* ${prTitle}
       *By:* [${senderName}](https://github.com/${senderName})
       [View Pull Request](https://github.com/${ownerName}/${repoName}/pull/${number})
       `;
@@ -31697,7 +31697,7 @@ const formatPullRequestReviewMessage = (payload) => {
             return message;
         case "edited":
             message = `❇️*Review edited* \\\#${number}
-      *Title:* ${prTitle}
+      *PR Title:* ${prTitle}
       *By:* [${senderName}](https://github.com/${senderName})
       *Status: ${state.replace(/_/g, " ")}*
       *Text: ${body !== null && body !== void 0 ? body : ""}*
@@ -31724,7 +31724,7 @@ const formatPullRequestReviewCommentMessage = (payload) => {
     switch (action) {
         case "created":
             message = `📝*New comment* \\\#${number}
-      *Title:* ${prTitle}
+      *PR Title:* ${prTitle}
       *By:* [${senderName}](https://github.com/${senderName})
       *Text: ${body}*
       [View Comment](${html_url})
@@ -31734,7 +31734,7 @@ const formatPullRequestReviewCommentMessage = (payload) => {
             return message;
         case "deleted":
             message = `🗑*Comment deleted* \\\#${number}
-      *Title:* ${prTitle}
+      *PR Title:* ${prTitle}
       *By:* [${senderName}](https://github.com/${senderName})
       [View Pull Request](https://github.com/${ownerName}/${repoName}/pull/${number})
       `;
@@ -31742,7 +31742,7 @@ const formatPullRequestReviewCommentMessage = (payload) => {
             return message;
         case "edited":
             message = `✏️*Comment edited* \\\#${number}
-      *Title:* ${prTitle}
+      *PR Title:* ${prTitle}
       *By:* [${senderName}](https://github.com/${senderName})
       *Text: ${body}*
       [View Comment](${html_url})

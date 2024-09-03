@@ -31669,7 +31669,7 @@ const formatPullRequestReviewCommentMessage = (payload) => {
     const { action, pull_request, repository, sender, comment } = payload;
     const { name, owner } = repository;
     const { title, number } = pull_request;
-    const { body } = comment;
+    const { body, url } = comment;
     const prTitle = escapeMarkdown(title);
     const ownerName = escapeMarkdown(owner.login);
     const repoName = escapeMarkdown(name);
@@ -31681,7 +31681,8 @@ const formatPullRequestReviewCommentMessage = (payload) => {
       On [${ownerName}/${repoName}](https://github.com/${ownerName}/${repoName}/pull/${number})
       *Title:* ${prTitle}
       *By:* [${senderName}](https://github.com/${senderName})
-      *Body: ${body}*
+      *Text: ${body}*
+      [View Comment](${url})
       [View Pull Request](https://github.com/${ownerName}/${repoName}/pull/${number})
       `;
             console.debug("Message: ", message);
@@ -31691,7 +31692,6 @@ const formatPullRequestReviewCommentMessage = (payload) => {
       On [${ownerName}/${repoName}](https://github.com/${ownerName}/${repoName}/pull/${number})
       *Title:* ${prTitle}
       *By:* [${senderName}](https://github.com/${senderName})
-      *Body: ${body}*
       [View Pull Request](https://github.com/${ownerName}/${repoName}/pull/${number})
       `;
             console.debug("Message: ", message);
@@ -31701,7 +31701,8 @@ const formatPullRequestReviewCommentMessage = (payload) => {
       On [${ownerName}/${repoName}](https://github.com/${ownerName}/${repoName}/pull/${number})
       *Title:* ${prTitle}
       *By:* [${senderName}](https://github.com/${senderName})
-      *Body: ${body}*
+      *Text: ${body}*
+      [View Comment](${url})
       [View Pull Request](https://github.com/${ownerName}/${repoName}/pull/${number})
       `;
             console.debug("Message: ", message);

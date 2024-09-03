@@ -67,7 +67,7 @@ const formatPullRequestMessage = (payload: PullRequestEvent): string => {
       return message;
 
     case "closed":
-      message = `❌*Closed* \\\#${number}
+      message = `❌ *Closed* \\\#${number}
       *Title:* ${prTitle}
       *By:* [${senderName}](https://github.com/${senderName})
       [View Pull Request](https://github.com/${ownerName}/${repoName}/pull/${number})
@@ -82,7 +82,7 @@ const formatPullRequestMessage = (payload: PullRequestEvent): string => {
       const { name } = reviewer;
       const { login } = reviewer as User;
       const reviewerName = escapeMarkdown(name ?? login ?? "");
-      message = `📝*Review Requested*  \\\#${number}
+      message = `📝 *Review Requested*  \\\#${number}
       *PR Title:* ${prTitle}
       *By:* [${senderName}](https://github.com/${senderName})
       *For:* [${reviewerName}](https://github.com/${reviewerName})
@@ -92,7 +92,7 @@ const formatPullRequestMessage = (payload: PullRequestEvent): string => {
       return message;
 
     case "synchronize":
-      message = `🔄*Updated* \\\#${number}
+      message = `🔄 *Updated* \\\#${number}
       *PR Title:* ${prTitle}
       *By:* [${senderName}](https://github.com/${senderName})
       [View Request](https://github.com/${ownerName}/${repoName}/pull/${number})
@@ -120,7 +120,7 @@ const formatPullRequestReviewMessage = (payload: PullRequestReviewEvent): string
 
   switch (action) {
     case "submitted":
-      message = `✅*Review submitted* \\\#${number}
+      message = `✅ *Review submitted* \\\#${number}
       *PR Title:* ${prTitle}
       *By:* [${senderName}](https://github.com/${senderName})
       *Status: ${state.replace(/_/g, " ")}*
@@ -132,7 +132,7 @@ const formatPullRequestReviewMessage = (payload: PullRequestReviewEvent): string
       return message;
 
     case "dismissed":
-      message = `❎*Review dismissed* \\\#${number}
+      message = `❎ *Review dismissed* \\\#${number}
       *PR Title:* ${prTitle}
       *By:* [${senderName}](https://github.com/${senderName})
       [View Pull Request](https://github.com/${ownerName}/${repoName}/pull/${number})
@@ -141,7 +141,7 @@ const formatPullRequestReviewMessage = (payload: PullRequestReviewEvent): string
       return message;
 
     case "edited":
-      message = `❇️*Review edited* \\\#${number}
+      message = `❇️ *Review edited* \\\#${number}
       *PR Title:* ${prTitle}
       *By:* [${senderName}](https://github.com/${senderName})
       *Status: ${state.replace(/_/g, " ")}*
@@ -173,7 +173,7 @@ const formatPullRequestReviewCommentMessage = (payload: PullRequestReviewComment
 
   switch (action) {
     case "created":
-      message = `📝*New comment* \\\#${number}
+      message = `📝 *New comment* \\\#${number}
       *PR Title:* ${prTitle}
       *By:* [${senderName}](https://github.com/${senderName})
       *Text: ${body}*
@@ -184,7 +184,7 @@ const formatPullRequestReviewCommentMessage = (payload: PullRequestReviewComment
       return message;
 
     case "deleted": 
-      message = `🗑*Comment deleted* \\\#${number}
+      message = `🗑 *Comment deleted* \\\#${number}
       *PR Title:* ${prTitle}
       *By:* [${senderName}](https://github.com/${senderName})
       [View Pull Request](https://github.com/${ownerName}/${repoName}/pull/${number})
@@ -193,7 +193,7 @@ const formatPullRequestReviewCommentMessage = (payload: PullRequestReviewComment
       return message;
 
     case "edited":
-      message = `✏️*Comment edited* \\\#${number}
+      message = `✏️ *Comment edited* \\\#${number}
       *PR Title:* ${prTitle}
       *By:* [${senderName}](https://github.com/${senderName})
       *Text: ${body}*

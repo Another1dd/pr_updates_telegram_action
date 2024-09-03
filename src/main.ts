@@ -8,7 +8,7 @@ async function run(): Promise<void> {
   try {
     const botToken = core.getInput("bot_token");
     const chatId = core.getInput("chat_id");
-    const topicId = core.getInput("topic_id");
+    const topicId = +core.getInput("topic_id");
 
     if (github.context.eventName !== "pull_request") {
       throw new Error("This action only works on pull_request events");

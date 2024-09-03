@@ -8,7 +8,7 @@ import axios from "axios";
  */
 const sendMessage = (
   chatId: string,
-  topicId: string,
+  topicId: number,
   message: string,
   uri: string,
 ) => {

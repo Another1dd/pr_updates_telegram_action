@@ -31592,6 +31592,7 @@ function run() {
             core.setOutput("Finshed time", new Date().toTimeString());
         }
         catch (error) {
+            console.debug(`Message send error: `, error);
             if (error instanceof Error)
                 core.setFailed(error.message);
         }

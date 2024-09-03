@@ -44,7 +44,7 @@ const formatMessage = (payload: PullRequestEvent): string => {
 
   switch (action) {
     case "opened":
-      message = `🔄 *Opened Pull Request* \\\#${number}
+      message = `🚀 *Opened Pull Request* \\\#${number}
       On [${ownerName}/${repoName}](https://github.com/${ownerName}/${repoName}/pull/${number})
       *Title:* ${prTitle}
       *By:* [${senderName}](https://github.com/${senderName})
@@ -78,6 +78,17 @@ const formatMessage = (payload: PullRequestEvent): string => {
       [View Request](https://github.com/${ownerName}/${repoName}/pull/${number})
       `;
       console.debug("Message: ", message);
+      return message;
+
+    case "synchronize":
+      message = `🔄  *Synchronize* 
+      On \\\#${number} [${ownerName}/${repoName}]\(https://github.com/${ownerName}/${repoName}/pull/${number}\) 
+      *Title:* ${prTitle}
+      *By:* [${senderName}](https://github.com/${senderName})
+      [View Request](https://github.com/${ownerName}/${repoName}/pull/${number})
+      `;
+      console.debug("Message: ", message);
+      console.debug("Payload: ", payload);
       return message;
     default:
       throw new Error(`Unsupported action: ${action}`);

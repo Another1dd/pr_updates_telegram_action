@@ -123,7 +123,7 @@ const formatPullRequestReviewMessage = (payload: PullRequestReviewEvent): string
       message = `✅*Review submitted* \\\#${number}
       *Title:* ${prTitle}
       *By:* [${senderName}](https://github.com/${senderName})
-      *Status: ${state}*
+      *Status: ${state.replace(/_/g, " ")}*
       *Text: ${body ?? ""}*
       [View Review](${html_url})
       [View Pull Request](https://github.com/${ownerName}/${repoName}/pull/${number})
@@ -144,7 +144,7 @@ const formatPullRequestReviewMessage = (payload: PullRequestReviewEvent): string
       message = `❇️*Review edited* \\\#${number}
       *Title:* ${prTitle}
       *By:* [${senderName}](https://github.com/${senderName})
-      *Status: ${state}*
+      *Status: ${state.replace(/_/g, " ")}*
       *Text: ${body ?? ""}*
       [View Review](${html_url})
       [View Pull Request](https://github.com/${ownerName}/${repoName}/pull/${number})

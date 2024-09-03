@@ -31680,7 +31680,7 @@ const formatPullRequestReviewMessage = (payload) => {
             message = `✅*Review submitted* \\\#${number}
       *Title:* ${prTitle}
       *By:* [${senderName}](https://github.com/${senderName})
-      *Status: ${state}*
+      *Status: ${state.replace(/_/g, " ")}*
       *Text: ${body !== null && body !== void 0 ? body : ""}*
       [View Review](${html_url})
       [View Pull Request](https://github.com/${ownerName}/${repoName}/pull/${number})
@@ -31699,7 +31699,7 @@ const formatPullRequestReviewMessage = (payload) => {
             message = `❇️*Review edited* \\\#${number}
       *Title:* ${prTitle}
       *By:* [${senderName}](https://github.com/${senderName})
-      *Status: ${state}*
+      *Status: ${state.replace(/_/g, " ")}*
       *Text: ${body !== null && body !== void 0 ? body : ""}*
       [View Review](${html_url})
       [View Pull Request](https://github.com/${ownerName}/${repoName}/pull/${number})

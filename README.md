@@ -6,9 +6,7 @@ A simple Github action that sends a Telegram message when:
 3. Pull request review comment: created, edited, deleted
 ---
 ## Usage
-To use this action you need setup your workflow to trigger on pull request events with the following types.
-1. opened 
-2. review_requested
+To use this action you need setup your workflow to trigger on pull request events.
 
 #### Example 
 

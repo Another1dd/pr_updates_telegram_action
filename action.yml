@@ -5,6 +5,9 @@ inputs:
   chat_id:
     required: true
     description: 'Telegram chat ID'
+  chat_id:
+    required: false
+    description: 'Telegram topic ID'
   bot_token:
     required: true
     description: 'Telegram bot token'

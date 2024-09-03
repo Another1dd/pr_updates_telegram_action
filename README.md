@@ -21,10 +21,11 @@ You can include this action in your workflow as follow
 
 ```yml
 - name: Pull Request Telegram Updates
-  uses: 
+  uses: Another1dd/pr_updates_telegram_action@vx.y.z
   with: 
     bot_token: '${{ secrets.BotToken }}' # Your bot token from github secrets
     chat_id: '${{ secrets.CHATID }}' # Your chat id from github secrets
+    chat_id: '${{ TOPIC_ID }}' # Your topic id
 ```
 
 

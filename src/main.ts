@@ -8,6 +8,7 @@ async function run(): Promise<void> {
   try {
     const botToken = core.getInput("bot_token");
     const chatId = core.getInput("chat_id");
+    const topicId = core.getInput("topic_id");
 
     if (github.context.eventName !== "pull_request") {
       throw new Error("This action only works on pull_request events");
@@ -22,7 +23,7 @@ async function run(): Promise<void> {
     const uri = `https://api.telegram.org/bot${botToken}/sendMessage`;
     const message = formatMessage(payload);
 
-    await sendMessage(chatId, message, uri);
+    await sendMessage(chatId, topicId, message, uri);
 
     core.debug(`Message sent!`);
     core.setOutput("Finshed time", new Date().toTimeString());

@@ -8,6 +8,7 @@ import axios from "axios";
  */
 const sendMessage = (
   chatId: string,
+  topicId: string,
   message: string,
   uri: string,
 ) => {
@@ -15,6 +16,7 @@ const sendMessage = (
     uri,
     {
       chat_id: chatId,
+      message_thread_id: topicId,
       text: message,
       parse_mode: "Markdownv2",
     },

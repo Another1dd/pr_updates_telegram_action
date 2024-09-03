@@ -1,8 +1,9 @@
 # Telegram Pull Request Updates
 ---
 A simple Github action that sends a Telegram message when:
-1. Pull request open
-2. Pull request review requested
+1. Pull request: opened, review requested, synchronize, closed
+2. Pull request review: submitted, edited, dismissed
+3. Pull request review comment: created, edited, deleted
 ---
 ## Usage
 To use this action you need setup your workflow to trigger on pull request events with the following types.
@@ -14,18 +15,22 @@ To use this action you need setup your workflow to trigger on pull request event
 ```yml 
 on:
   pull_request:
-    types: [opened, review_requested]
+    types: [ opened, review_requested, synchronize, closed ]
+  pull_request_review:
+    types: [submitted, edited, dismissed]
+  pull_request_review_comment:
+    types: [ created, edited, deleted ]
 ```
 <br/>
 You can include this action in your workflow as follow
 
 ```yml
 - name: Pull Request Telegram Updates
-  uses: Another1dd/pr_updates_telegram_action@vx.y.z
+  uses: Another1dd/pr_updates_telegram_action@v1.0.0
   with: 
     bot_token: '${{ secrets.BotToken }}' # Your bot token from github secrets
     chat_id: '${{ secrets.CHATID }}' # Your chat id from github secrets
-    chat_id: '${{ TOPIC_ID }}' # Your topic id
+    topic_id: '${{ TOPIC_ID }}' # Your topic id
 ```
 
 
@@ -37,15 +42,6 @@ or refer to [this](https://core.telegram.org/bots#3-how-do-i-create-a-bot) on ho
 `Chat ID:` You may use this [RawDataBot](https://t.me/RawDataBot) to get the chat id the for a group or a channel.
 
 ---
-
----
-### Action output: 
-
-1. Pull Request Open
-
-
-2. Review Request
-
 
 ---
 

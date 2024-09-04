@@ -76,7 +76,6 @@ const formatPullRequestMessage = (payload: PullRequestEvent): string => {
       return message;
 
     case "review_requested":
-      const { pull_request } = payload;
       const { requested_reviewers } = pull_request;
       const reviewer = requested_reviewers[0];
       const { name } = reviewer;
@@ -92,9 +91,11 @@ const formatPullRequestMessage = (payload: PullRequestEvent): string => {
       return message;
 
     case "synchronize":
+      const { diff_url } = pull_request;
       message = `🔄 *Updated* \\\#${number}
       *PR Title:* ${prTitle}
       *By:* [${senderName}](https://github.com/${senderName})
+      [View Difference](${diff_url})
       [View Request](https://github.com/${ownerName}/${repoName}/pull/${number})
       `;
       console.debug("Message: ", message);

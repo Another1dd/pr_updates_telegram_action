@@ -13,7 +13,7 @@ To use this action you need setup your workflow to trigger on pull request event
 ```yml 
 on:
   pull_request:
-    types: [ opened, review_requested, synchronize, closed ]
+    types: [ opened, ready_for_review, review_requested, synchronize, closed ]
   pull_request_review:
     types: [ submitted, edited, dismissed ]
   pull_request_review_comment:

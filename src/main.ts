@@ -69,6 +69,15 @@ const formatPullRequestMessage = (payload: PullRequestEvent): string => {
       console.debug("Message: ", message);
       return message;
 
+    case "ready_for_review":
+      message = `🚀*Ready For Review* \\\#${number}
+      *PR Title:* ${prTitle}
+      *By:* [${senderName}](https://github.com/${senderName})
+      [View Pull Request](https://github.com/${ownerName}/${repoName}/pull/${number})
+      `;
+      console.debug("Message: ", message);
+      return message;
+
     case "closed":
       message = `❌ *Closed* \\\#${number}
       *PR Title:* ${prTitle}
@@ -88,7 +97,6 @@ const formatPullRequestMessage = (payload: PullRequestEvent): string => {
 
       message = `📝 *Review Requested*  \\\#${number}
       *PR Title:* ${prTitle}
-      *Draft:* ${draft}
       *By:* [${senderName}](https://github.com/${senderName})
       *For:* [${reviewerName}](https://github.com/${reviewerName})
       [View Request](https://github.com/${ownerName}/${repoName}/pull/${number})

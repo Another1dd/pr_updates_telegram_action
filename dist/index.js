@@ -31614,8 +31614,9 @@ const formatPullRequestMessage = (payload) => {
     var _a;
     const { action, pull_request, repository, sender, number } = payload;
     const { name, owner } = repository;
-    const { title } = pull_request;
+    const { title, body, draft } = pull_request;
     const prTitle = escapeMarkdown(title);
+    const prDescription = escapeMarkdown(body !== null && body !== void 0 ? body : "");
     const ownerName = escapeMarkdown(owner.login);
     const repoName = escapeMarkdown(name);
     const senderName = escapeMarkdown(sender.login);
@@ -31624,6 +31625,8 @@ const formatPullRequestMessage = (payload) => {
         case "opened":
             message = `🚀*Opened* \\\#${number}
       *PR Title:* ${prTitle}
+      *PR Description:* ${prDescription}
+      *Draft:* ${draft}
       *By:* [${senderName}](https://github.com/${senderName})
       [View Pull Request](https://github.com/${ownerName}/${repoName}/pull/${number})
       `;
@@ -31631,7 +31634,8 @@ const formatPullRequestMessage = (payload) => {
             return message;
         case "closed":
             message = `❌ *Closed* \\\#${number}
-      *Title:* ${prTitle}
+      *PR Title:* ${prTitle}
+      *Draft:* ${draft}
       *By:* [${senderName}](https://github.com/${senderName})
       [View Pull Request](https://github.com/${ownerName}/${repoName}/pull/${number})
       `;
@@ -31645,6 +31649,7 @@ const formatPullRequestMessage = (payload) => {
             const reviewerName = escapeMarkdown((_a = name !== null && name !== void 0 ? name : login) !== null && _a !== void 0 ? _a : "");
             message = `📝 *Review Requested*  \\\#${number}
       *PR Title:* ${prTitle}
+      *Draft:* ${draft}
       *By:* [${senderName}](https://github.com/${senderName})
       *For:* [${reviewerName}](https://github.com/${reviewerName})
       [View Request](https://github.com/${ownerName}/${repoName}/pull/${number})
@@ -31655,6 +31660,7 @@ const formatPullRequestMessage = (payload) => {
             const { diff_url } = pull_request;
             message = `🔄 *Updated* \\\#${number}
       *PR Title:* ${prTitle}
+      *Draft:* ${draft}
       *By:* [${senderName}](https://github.com/${senderName})
       [View Difference](${diff_url})
       [View Request](https://github.com/${ownerName}/${repoName}/pull/${number})
@@ -31669,19 +31675,20 @@ const formatPullRequestMessage = (payload) => {
 const formatPullRequestReviewMessage = (payload) => {
     const { action, pull_request, repository, sender, review } = payload;
     const { name, owner } = repository;
-    const { title, number } = pull_request;
+    const { title, number, draft } = pull_request;
     const { body, html_url, state } = review;
     const prTitle = escapeMarkdown(title);
     const ownerName = escapeMarkdown(owner.login);
     const repoName = escapeMarkdown(name);
     const senderName = escapeMarkdown(sender.login);
+    const prState = escapeMarkdown(state);
     let message = "";
     switch (action) {
         case "submitted":
             message = `✅ *Review submitted* \\\#${number}
       *PR Title:* ${prTitle}
       *By:* [${senderName}](https://github.com/${senderName})
-      *Status: ${state.replace(/_/g, " ")}*
+      *Status: ${prState}*
       *Text: ${body !== null && body !== void 0 ? body : ""}*
       [View Review](${html_url})
       [View Pull Request](https://github.com/${ownerName}/${repoName}/pull/${number})
@@ -31700,7 +31707,7 @@ const formatPullRequestReviewMessage = (payload) => {
             message = `❇️ *Review edited* \\\#${number}
       *PR Title:* ${prTitle}
       *By:* [${senderName}](https://github.com/${senderName})
-      *Status: ${state.replace(/_/g, " ")}*
+      *Status: ${prState}*
       *Text: ${body !== null && body !== void 0 ? body : ""}*
       [View Review](${html_url})
       [View Pull Request](https://github.com/${ownerName}/${repoName}/pull/${number})

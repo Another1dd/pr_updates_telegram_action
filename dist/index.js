@@ -31633,7 +31633,7 @@ const formatPullRequestMessage = (payload) => {
             console.debug("Message: ", message);
             return message;
         case "ready_for_review":
-            message = `🚀*Ready For Review* \\\#${number}
+            message = `✔️*Ready For Review* \\\#${number}
       *PR Title:* ${prTitle}
       *By:* [${senderName}](https://github.com/${senderName})
       [View Pull Request](https://github.com/${ownerName}/${repoName}/pull/${number})
